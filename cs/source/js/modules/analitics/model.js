@@ -10,9 +10,9 @@ class AnaliticsModel extends BaseModel {
 		var url = this.Url;
 
 		if (this.get('token')) {
-			url += 'result/' + this.get('token');
+			url += 'statistic/' + this.get('token');
 		} else {
-			url += 'parse?q=' + this.get('queryString');
+			url += 'statistic?q=' + this.get('queryString');
 		}
 		return url;
 	}

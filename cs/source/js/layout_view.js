@@ -24,8 +24,11 @@ class LayoutView extends BaseView {
 		this.router.on('route', this.onRoute, this);
 	}
 	onRoute() {
-		console.log('route')
-		// TODO: сделать смену состояния лайаута при смене роута
+		if (window.location.hash.length > 1) {
+			this.$header.removeClass('big').addClass('small');
+		} else {
+			this.$header.removeClass('small').addClass('big');
+		}
 	}
 	beforeInitialize(options) {
 		var authenticateWidget,
@@ -39,10 +42,11 @@ class LayoutView extends BaseView {
 	}
 	afterInitialize(options) {
 		super.afterInitialize(options);
-		this.render({ headerState: 'big' /* для неглавной страницы состояние small */});
+		this.render({ headerState: (window.location.hash.length > 1 ? 'small' : 'big')});
 		this.router = options.router;
 		this.router.app = this;
 		this.bindRoute();
+		this.$header = this.$('.jsc-header');
 /*		this.$el.on('action.search', _.bind(this, this.doSearch));*/
 	}
 	doSearch(event) {
