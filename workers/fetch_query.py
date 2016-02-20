@@ -2,13 +2,14 @@ import redis
 import threading
 import pickle
 import oauth2
+import json
 
 
 class Listener(threading.Thread):
-    CONSUMER_KEY = "QXKoJxKcigmOLL6LR9rjg"
-    CONSUMER_SECRET = "7rTfpz0UqscZfss2KRoHLTiEZSRjpcLkJzqTcJU9ks"
-    ACCESS_KEY = "1567430544-bCN19cpPGNjgTJhH2GghqoeHkgb1HxuU0TU5UMQ"
-    ACCESS_SECRET = "0qohDGnWxczci4CsmTJkznt3vSiFVjRXaWy0EftI9j7C9"
+    CONSUMER_KEY = "insert value"
+    CONSUMER_SECRET = "insert value"
+    ACCESS_KEY = "insert value"
+    ACCESS_SECRET = "insert value"
 
     def __init__(self, r, channels):
         threading.Thread.__init__(self)
@@ -30,6 +31,9 @@ class Listener(threading.Thread):
             query_data = pickle.loads(query)
             result = self.oauth_req( 'https://api.twitter.com/1.1/search/tweets.json?q=%s' % (query_data['query'],))
             print(result)
+            query_data['result'] = json.loads(result.decode())
+            query_data['status'] = 1
+            self.redis.set(token, pickle.dumps(query_data))
         else:
             print("query not found:", token)
 
