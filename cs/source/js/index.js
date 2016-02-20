@@ -1,7 +1,7 @@
 import {startHistory} from 'muce.io';
 
-import router from './router';
 import '../style/reset.scss';
+import router from './router';
 import LayoutView from './layout_view';
 
 
