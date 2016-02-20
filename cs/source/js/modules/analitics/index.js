@@ -9,14 +9,28 @@ class AnaliticsModuleView extends BaseView {
 		super.initialize(options);
 	}
 	showDefaultResult(query) {
+		var interval, timeout = 10;
+
 		this.model.set({queryString: query});
 		this.model.fetch().then(() => {
+			if (this.model.get('token')) {
+				interval = setInterval(() => {
+					if (--timeout < 0) {
+						clearInterval(interval);
+					}
+					this.model.fetch().then(() => {
+						this.showCharts();
+					});
+				}, 500);
+			}
 			this.showCharts();
 		});
 		console.log(query);
 	}
 	showCharts() {
 		console.log(this.model);
+		// если статус модели 0 - показываем прелоадер
+		// иначе рендерим графики
 	}
 
 }
