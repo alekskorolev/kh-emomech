@@ -11,7 +11,7 @@ class AnaliticsModuleView extends BaseView {
 	showDefaultResult(query) {
 		var interval, timeout = 10;
 
-		this.model.set({queryString: query});
+		this.model.set({queryString: query, token: undefined});
 		this.model.fetch().then(() => {
 			if (this.model.get('token')) {
 				interval = setInterval(() => {

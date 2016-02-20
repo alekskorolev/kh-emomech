@@ -32,7 +32,7 @@ class ActionQueryView(View):
         token = get_token()
         r = get_redis()
         r.set(token, pickle.dumps({"query": query, "status": 0}))
-        r.lpush('q_source', token)
+        r.publish('q_source', token)
         return http.JsonResponse({"token": token, "status": 0})
 
 
