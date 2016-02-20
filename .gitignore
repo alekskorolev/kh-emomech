@@ -23,6 +23,7 @@ var/
 *.egg-info/
 .installed.cfg
 *.egg
+venv
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -60,3 +61,27 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+### JavaScript ###
+node_modules
+coverage
+npm-debug.log
+local.config.js
+cs/build/js
+
+### SublimeText ###
+# cache files for sublime text
+*.tmlanguage.cache
+*.tmPreferences.cache
+*.stTheme.cache
+
+# workspace files are user-specific
+*.sublime-workspace
+
+# project files should be checked into the repository, unless a significant
+# proportion of contributors will probably not be using SublimeText
+*.sublime-project
+
+
+### PyCharm ###
+.idea/

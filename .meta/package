@@ -1,0 +1,14 @@
+django
+django-audit-log
+django-extensions
+django-cors-headers
+django-safedelete
+djangorestframework
+drfdocs
+
+redis
+mockredispy
+mock
+
+unittest-xml-reporting
+jsonfield
