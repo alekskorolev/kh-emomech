@@ -20,7 +20,13 @@ module.exports = {
         loaders: [
             {test: /\.html$/, loader: 'ehogan'},
             {test: /\.js$/, loader: 'babel'},
-            {test: /\.scss$/, loaders: ["style", "css?sourceMap", "sass?sourceMap"]}
+            {test: /\.scss$/, loaders: ["style", "raw?sourceMap", "sass?sourceMap"]},
+/*            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loaders: [
+                    'url-loader?limit=100000'
+                ]
+            }*/
         ]
     },
     resolve: {
