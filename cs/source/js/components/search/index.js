@@ -7,18 +7,17 @@ import './style.scss';
 
 class SearchComponent extends BaseComponent {
     beforeInitialize(options) {
-        this.events = {
+        this.delegateEvents({
             'keyup .jsc-input': 'input'
-        }
+        });
         this.template = template;
         super.beforeInitialize(options);
     }
-    rootEventsInit() {
-/*        this.$root.on('popups:close', this.close.bind(this));
-        this.$root.on('popup:open:' + this.popupId, this.open.bind(this));*/
-    }
     input(event) {
-        console.log(event);
+        if (event.keyCode === 13) {
+            event.value = $(event.currentTarget).val()
+            this.jTrigger('action.search', event);
+        }
     }
 }
 
