@@ -6,6 +6,8 @@ django-safedelete
 djangorestframework
 drfdocs
 
+oauth2
+
 redis
 mockredispy
 mock
