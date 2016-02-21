@@ -28,7 +28,7 @@ class AnaliticsModel extends BaseModel {
 		return key;
 	}
 	getCountByTime(period = 2) { 
-		var rawList = _.extract(this.attributes, 'result.statuses', []),
+		var rawList = this.get('messages') || [],
 			parsedData = {},
 			timeKey,
 			parsedList = [];

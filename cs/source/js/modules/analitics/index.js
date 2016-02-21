@@ -15,22 +15,24 @@ class AnaliticsModuleView extends BaseView {
 		super.initialize(options);
 	}
 	showDefaultResult(query) {
-		var interval, timeout = 30;
+		var interval, timeout = 100;
 
 		this.model.set({queryString: query, token: undefined, status: 0});
 		this.model.fetch().then(() => {
 			if (this.model.get('token')) {
 				interval = setInterval(() => {
-					if (--timeout < 0 || this.model.get('status') > 0) {
+					if (--timeout < 0 && this.model.get('status') === 0) {
 						clearInterval(interval);
+						this.renderError();
+						return;
 					}
 					this.model.fetch().then(() => {
-						if (this.model.get('status') > 0) {
+						if (this.model.get('status') > 1) {
 							clearInterval(interval);
 						}
 						this.showCharts();
 					});
-				}, 1500);
+				}, 3000);
 			}
 			this.showCharts();
 		}, () => {
