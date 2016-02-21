@@ -71,14 +71,29 @@ body{
 				}
 			}
 			.query_search{
-				input{
+				position: relative;
+				.jsc-input{
 					vertical-align: top;
 					margin-top: 32px;
 					margin-left: 12px;
 					height: 17px;
-					border: 1px solid $primary-clor;
+					border: 2px solid $primary-clor;
 					width: 35%;
+					outline: 0;
+					
 				}
+				.jsc-check{
+						display: block;
+						background-color: $primary-clor;
+						display: block;
+					    position: absolute;
+					    color: #fff;
+					    border: none;
+					    right: -46px;
+					    top: -44px;
+					    padding: 4px;
+					    cursor: pointer;
+					}
 			}
 			.about{
 				display: none;
@@ -102,12 +117,25 @@ body{
 				}
 				.query_search{
 					display: block;
-					input{
+					position: relative;
+					.jsc-input{
 						display: block;
 						width: 75%;
 						margin: 0 auto;
 						border: 2px solid $primary-clor;
 						height: 23px;
+						outline: 0;
+					}
+					.jsc-check{
+						    display: block;
+						    position: absolute;
+						    background-color: #0A4F9B;
+						    color: #fff;
+						    border: none;
+						    right: 105px;
+						    top: 0;
+						    padding: 7px;
+						    cursor: pointer;
 					}
 				}
 				nav{
