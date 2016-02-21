@@ -17,6 +17,7 @@ class AnaliticsModuleView extends BaseView {
 	showDefaultResult(query) {
 		var interval, timeout = 100;
 
+		this.renderWaiting();
 		this.model.set({queryString: query, token: undefined, status: 0});
 		this.model.fetch().then(() => {
 			if (this.model.get('token')) {
@@ -38,28 +39,31 @@ class AnaliticsModuleView extends BaseView {
 		}, () => {
 			this.renderError();
 		});
-		console.log(query);
 	}
 	renderError() {
 		this.render();
 		this.$el.append(errorTemplate());
+	}
+	renderWaiting() {
+		this.render();
+		this.$el.append(withinTemplate({}));
+
 	}
 	showCharts() {
 		var chartObject, width;
 
 		this.render();
 		if (this.model.get('status') === 0) {
-			console.log('withing')
 			this.$el.append(withinTemplate({}));
 			return;
 		}
-		console.log('render')
+		console.log(this.model.attributes)
 
 		width = Math.floor(window.screen.width * 0.83);
 		chartObject = uv.chart('StackedArea', {
 			categories : ['Tweets by day'],
 			dataset : {
-				'Tweets by day': this.model.getCountByTime(2)
+				'Tweets by day': this.model.getCountByTime(3)
 			}
 		}, {
 			graph: {
@@ -69,11 +73,8 @@ class AnaliticsModuleView extends BaseView {
 				width: width
 			}
 		});
-		this.$el.append(chartObject)
 /*		this.smoothie = this.smoothie || new SmoothieChart();
 		this.smoothie.streamTo(this.$('#jsc-analitic-canvas')[0]);*/
-		console.log(chartObject)
-		console.log(this.model);
 		// если статус модели 0 - показываем прелоадер
 		// иначе рендерим графики
 	}

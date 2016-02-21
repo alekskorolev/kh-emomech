@@ -5,6 +5,7 @@ var config = {
 		// TODO: возможно функционал вынести в либу а тут оставить только константы
 		api: {
 			protocol: 'http',
+			//domain: 'localhost',
 			domain: '169.44.58.88',
 			port: 5000,
 			rootPath: '/',

@@ -17,14 +17,35 @@ keys = [
         'A_SEC': 'F1Vy30pF4xM85ldf6JLcrOkPa8nZfmrTw0yyCagN8w1wX',
     },
     {
-        'C_KEY': 'xVPbRf4OkqnHpm3KIBTK2gmFs',
-        'C_SEC': '36XtgFBXknCdP1jGVcD5wY7qiXEKS2uU8BVbRoQjPIfyiElWjE',
-        'A_KEY': '1567430544-bCN19cpPGNjgTJhH2GghqoeHkgb1HxuU0TU5UMQ',
-        'A_SEC': '0qohDGnWxczci4CsmTJkznt3vSiFVjRXaWy0EftI9j7C9',
+        'C_KEY': 'MTkfYrhDoZmrsLsfWUhUqHCtT',
+        'C_SEC': '3qLSWmmiTD681GCjIHmr3N5AUO7a9ImvjIufRPLANLvVRgE18D',
+        'A_KEY': '701479992874680321-bU1uSlQ88xO7D9xe5M1Ota4WhnNxn3u',
+        'A_SEC': 'SUZccdPcTO8au7HKbxZYEJBgx7atnW1mxBiSEEJNY3Ute',
+    },
+    {
+        'C_KEY': 'I5a2SbZ6kJMzCZSFVKavo01O9',
+        'C_SEC': 'wnYUhzueWpkVzsnRA2P379hVglfwycY1mFAHFiIPee2mpmxfmo',
+        'A_KEY': '701484146993065984-sYELcyC42HodlVspHzXrMgqSnIWpdGb',
+        'A_SEC': '06XvjwVSKIMlUUxbRNKXxwMfvn8o1D7LVlxWQT70da2x4',
+    },
+    {
+        'C_KEY': 'CAKM6guBzyNuSQobpXc57L7VR',
+        'C_SEC': 'XyM5alNqUnXwFQx9i69npw0QMEB9lebj2fkZs9MeNWLNxtMaOZ',
+        'A_KEY': '2888104553-MpKQ0cl1GHDkbtZWieMuIVKFGLcoYvPxJJb7UPH',
+        'A_SEC': 'X8xb9Wj1rVdfGiRMB6NZj6WoTO3T04OGNY8sQfKfcac4o',
+    },
+    {
+        'C_KEY': 'cdkBoHFO3JXsM1R6FiKJ7qbGP',
+        'C_SEC': 'VhdpjOxsBRuOcZhFuccYdazxprSHtaQGhPyclfsE7YoQguRK1G',
+        'A_KEY': '701491142613983232-qbTLEtZFZM54OgTzK9cvErqEArb7kgI',
+        'A_SEC': 'XutvYnnmOfdVXvmrl5QGgM28KyiNceLe45rrc1IabB9gj',
     },
 ]
 
+
 class Listener(threading.Thread):
+    current_key = 0
+    max_key = 5
 
     def __init__(self, r, channels):
         threading.Thread.__init__(self)
@@ -32,30 +53,19 @@ class Listener(threading.Thread):
         self.pubsub = self.redis.pubsub()
         self.pubsub.subscribe(channels)
 
+    def key(self):
+        self.current_key += 1
+        if self.current_key == self.max_key:
+            self.current_key = 0
+        return keys[self.current_key]
+
     def oauth_req(self, url, http_method="GET", post_body="", http_headers=None):
-        consumer = oauth2.Consumer(key=keys[0]['C_KEY'], secret=keys[0]['C_SEC'])
-        token = oauth2.Token(key=keys[0]['A_KEY'], secret=keys[0]['A_SEC'])
+        key = self.key()
+        consumer = oauth2.Consumer(key=key['C_KEY'], secret=key['C_SEC'])
+        token = oauth2.Token(key=key['A_KEY'], secret=key['A_SEC'])
         client = oauth2.Client(consumer, token)
         resp, content = client.request(url.encode('utf-8'), method=http_method, body=post_body.encode(), headers=http_headers)
         return content
-
-    def x_get_next(self):
-        result_data = {}
-        statuses = result_data.get('statuses', [])
-        count = len(statuses) if statuses else 0
-        if count == 100:
-            print('|')
-            last_id = result_data['statuses'][99]['id']
-            if last_id > loaded_id:
-                list = self.get_next_page(query, last_id=last_id)
-                result_data['statuses'] += list.get('statuses', [])
-            else:
-                print(result.decode())
-                print(count)
-        else:
-            print(result.decode())
-            print(count)
-        return result_data
 
     def get_page(self, query, last_id=0):
         url = 'https://api.twitter.com/1.1/search/tweets.json?lang=en&count=100&q=%s' % (query,)
@@ -70,11 +80,26 @@ class Listener(threading.Thread):
     def clear_data(self, list, loaded_id=0):
         clean_list = []
         for msg in list:
+            ent = msg.get('entities') or []
+            hts = []
+            mda = []
+            ht = ent.get('hashtags', [])
+            for h in ht:
+                hts.append(h.get('text'))
+            md = msg.get('media') or []
+            for m in md:
+                mda.append(m.get('media_url'))
+            place = msg.get('place') or {}
             clean_msg = {
                 'created_at': msg.get('created_at'),
                 'id': msg.get('id'),
                 'text': msg.get('text'),
+                'retweet_count': msg.get('retweet_count'),
+                'hashtags': hts,
+                'place': place.get('fill_name'),
+                'media': mda
             }
+            #clean_msg = msg
             if msg.get('id') > loaded_id:
                 clean_list.append(clean_msg)
         return clean_list
@@ -98,7 +123,7 @@ class Listener(threading.Thread):
                 first = clean_list[0]['id']
                 if max_loaded < first:
                     max_loaded = first
-                time.sleep(2)
+                time.sleep(1)
                 result = self.get_page(query_string, last_id=last)
                 clean_list = self.clear_data(result.get('statuses', []), loaded_id=loaded_id)
                 query_data['messages'] += clean_list
@@ -110,29 +135,6 @@ class Listener(threading.Thread):
             query_data['loaded_id'] = max_loaded
             query_data['status'] = 2
             self.redis.set(key, pickle.dumps(query_data))
-
-    def x_work(self, item):
-        if True:
-            result = self.redis.get(query_data.get('query'))
-            if not result:
-                result = self.get_next_page(query_data.get('query'))
-                self.clear_data(result)
-                self.redis.set(query_data['query'], pickle.dumps(result))
-            else:
-                result = pickle.loads(result)
-                loaded_id = result.get('search_metadata', {}).get('max_id', 0)
-                loaded_result = self.get_next_page(query_data.get('query'), loaded_id=loaded_id)
-                self.clear_data(loaded_result, loaded_id=loaded_id)
-                result['statuses'] = result.get('statuses', []) + loaded_result.get('statuses', [])
-                result['search_metadata'] = loaded_result.get('search_metadata', result.get('search_metadata'))
-
-            query_data['result'] = result
-            log.log(2, len(result['statuses']))
-            query_data['status'] = 1
-
-            self.redis.set(key, pickle.dumps(query_data))
-        else:
-            print(2, "query not found: %s" % (key, ))
 
     def run(self):
         for item in self.pubsub.listen():
