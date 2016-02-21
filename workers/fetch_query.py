@@ -25,7 +25,7 @@ class Listener(threading.Thread):
         return content
 
     def get_next_page(self, query, last_id=None):
-        url = 'https://api.twitter.com/1.1/search/tweets.json?count=100&q=%s' % (query,)
+        url = 'https://api.twitter.com/1.1/search/tweets.json?count=98&q=%s' % (query,)
         if last_id:
             url += "&max_id=%d" % (last_id, )
         result = self.oauth_req(url)

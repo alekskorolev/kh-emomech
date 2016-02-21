@@ -1,11 +1,15 @@
-import {BaseView} from 'muce.io';
+import {$, BaseView} from 'muce.io';
 
 import AnaliticsModel from './model';
+//import {SmoothieChart} from 'js/smoothie';
+import template from 'templates/analitics.html';
  
 
 class AnaliticsModuleView extends BaseView {
 	initialize(options) {
 		this.model = new AnaliticsModel({});
+		this.$el = $('#jsc-page');
+		this.template = template;
 		super.initialize(options);
 	}
 	showDefaultResult(query) {
@@ -31,6 +35,24 @@ class AnaliticsModuleView extends BaseView {
 		console.log(query);
 	}
 	showCharts() {
+		this.render();
+		var chartObject = uv.chart('Line', {
+			categories : ['t1', 't2'],
+			dataset : {
+				t1: [
+					{name: 1, value: 5},
+					{name: 2, value: 3}
+				],
+				t2: [
+					{name: 1, value: 7},
+					{name: 2, value: 2}
+				]
+			}
+		}, {});
+		this.$el.append(chartObject)
+/*		this.smoothie = this.smoothie || new SmoothieChart();
+		this.smoothie.streamTo(this.$('#jsc-analitic-canvas')[0]);*/
+		console.log(chartObject)
 		console.log(this.model);
 		// если статус модели 0 - показываем прелоадер
 		// иначе рендерим графики

@@ -1,4 +1,4 @@
-import {BaseModel} from 'muce.io';
+import {_, BaseModel} from 'muce.io';
 
 import config from 'cs/config/app.conf.js';
 
