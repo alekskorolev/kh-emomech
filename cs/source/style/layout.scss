@@ -130,12 +130,27 @@ body{
 		width: 1280px;
 	    margin: 0px auto;
 		.waitnog-block{
-			font-size: 24px;
+			font-size: 48px;
 			font-family: $other-font;
-			color: $primary-clor;
+			color: #ffffff;
 			text-align: center;
-			margin-top: 15px;
-
+			position: fixed;
+			top: 90px;
+			bottom: 0px;
+			padding-top: 250px;
+			background: rgba(0,0,0,0.7);
+			width: 100%;
+		}
+		.chart-menu-list {
+		    display: block;
+		    width: 100%;
+		    position: relative;
+		    li {
+	    	    display: block;
+				float: left;
+				margin: 5px;
+				border-bottom: 1px solid lightgrey;
+		    }
 		}
 	}
 }

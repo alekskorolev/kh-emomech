@@ -19,12 +19,9 @@ class AnaliticsModel extends BaseModel {
 	getTimeKey(time, period = 0) {
 		var key = '';
 
-		if (period === 0) return key;
-		if (period > 0) key += (time.getMonth() + 1);
-		if (period > 1) key += '.' + time.getDate();
-		if (period > 2) key += ' ' + time.getHours();
-		if (period > 3) key += ':' + time.getMinutes();
-		if (period > 4) key += ':' + time.getSeconds();
+		if (period > 0 && period < 3) key += (time.getMonth() + 1) + '.';
+		if (period > 1 && period < 4) key += time.getDate();
+		if (period > 2) key += ' '+Math.floor(time.getHours() / 8) * 8 + 'h';
 		return key;
 	}
 	getCountByTime(period = 2) { 
@@ -46,6 +43,22 @@ class AnaliticsModel extends BaseModel {
 			parsedList.unshift({name: key, value: value});
 		});
 		return parsedList;
+	}
+	getCountByRetweet(period=2) {
+		var rawList = this.get('messages') || [],
+			parsedData = {},
+			timeKey,
+			parsedLists = {};
+
+		rawList.forEach((msg) => {
+			if (!_.isDate(msg.created_at)) {
+				msg.created_at = new Date(msg.created_at);
+			}
+			timeKey = this.getTimeKey(msg.created_at, period);
+			parsedData
+			parsedData[timeKey] = (parsedData[timeKey] || 0) + 1;
+
+		});
 	}
 }
 

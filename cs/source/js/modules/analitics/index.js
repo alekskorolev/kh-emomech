@@ -14,28 +14,29 @@ class AnaliticsModuleView extends BaseView {
 		this.template = template;
 		super.initialize(options);
 	}
-	showDefaultResult(query) {
-		var interval, timeout = 100;
+	parseResult(query) {
+		var timeout = 100;
 
+		clearInterval(this.fetchInterval);
 		this.renderWaiting();
 		this.model.set({queryString: query, token: undefined, status: 0});
 		this.model.fetch().then(() => {
 			if (this.model.get('token')) {
-				interval = setInterval(() => {
+				this.fetchInterval = setInterval(() => {
 					if (--timeout < 0 && this.model.get('status') === 0) {
-						clearInterval(interval);
+						clearInterval(this.fetchInterval);
 						this.renderError();
 						return;
 					}
 					this.model.fetch().then(() => {
 						if (this.model.get('status') > 1) {
-							clearInterval(interval);
+							clearInterval(this.fetchInterval);
 						}
-						this.showCharts();
+						this.renderCb();
 					});
 				}, 1000);
 			}
-			this.showCharts();
+			this.renderCb();
 		}, () => {
 			this.renderError();
 		});
@@ -49,34 +50,68 @@ class AnaliticsModuleView extends BaseView {
 		this.$el.append(withinTemplate({}));
 
 	}
-	showCharts() {
-		var chartObject, width;
-
-		this.render();
-		if (this.model.get('status') === 0) {
-			this.$el.append(withinTemplate({}));
-			return;
-		}
-		console.log(this.model.attributes)
-
-		width = Math.floor(window.screen.width * 0.83);
-		chartObject = uv.chart('StackedArea', {
-			categories : ['Tweets by day'],
-			dataset : {
-				'Tweets by day': this.model.getCountByTime(3)
-			}
-		}, {
+	chartOptions() {
+		var width = Math.floor(window.screen.width * 0.83);
+		
+		return {
 			graph: {
 				orientation: "Vertical"
 			},
 			dimension: {
 				width: width
+			},
+			axis: {
+				tick: 16,
+				subtick: 4,
+				showsubtick: false
 			}
-		});
-/*		this.smoothie = this.smoothie || new SmoothieChart();
-		this.smoothie.streamTo(this.$('#jsc-analitic-canvas')[0]);*/
-		// если статус модели 0 - показываем прелоадер
-		// иначе рендерим графики
+		}
+	}
+	renderCb() {}
+	countByDay(query) {
+		this.renderCb = () => {
+			this.showCharts(query, 'StackedArea', {
+				categories: ['Tweets by day'],
+				dataset: {
+					'Tweets by day': this.model.getCountByTime(2)
+				}
+			});
+		}
+		this.parseResult(query);
+	}
+	countByHour(query) {
+		this.renderCb = () => {
+			this.showCharts(query, 'StackedArea', {
+				categories: ['Tweets by hour'],
+				dataset: {
+					'Tweets by hour': this.model.getCountByTime(3)
+				}
+			});
+		}
+		this.parseResult(query);
+	}
+	retweetByDay(query) {
+		
+	}
+	retweetByHour(query) {
+		
+	}
+	moodByDay(query) {
+		
+	}
+	moodByHour(query) {
+		
+	}
+	showCharts(query, type, data) {
+		var chartObject;
+		console.log(this.model.attributes)
+		this.render({query: query});
+		if (this.model.get('status') === 0) {
+			this.$el.append(withinTemplate({}));
+			return;
+		}
+
+		chartObject = uv.chart(type, data, this.chartOptions());
 	}
 
 }
@@ -86,7 +121,12 @@ var AnaliticsModuleRoutes = {
 	prefix: 'result',
 	moduleName: 'analitics',
 	routes: [
-		{path: '/:query', action: 'showDefaultResult'}
+		{path: '/:query', action: 'countByDay'},
+		{path: '/cbh/:query', action: 'countByHour'},
+		{path: '/rbd/:query', action: 'retweetByDay'},
+		{path: '/rbh/:query', action: 'retweetByHour'},
+		{path: '/mbd/:query', action: 'moodByDay'},
+		{path: '/mbh/:query', action: 'moodByHour'}
 	]
 }
 
