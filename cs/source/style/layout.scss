@@ -1,6 +1,7 @@
-@import url(https://fonts.googleapis.com/css?family=Josefin+Sans);
+/*@import url(https://fonts.googleapis.com/css?family=Josefin+Sans);*/
 @import url(https://fonts.googleapis.com/css?family=Arimo);
-$primary-font: 'Josefin Sans', sans-serif;
+@import url(https://fonts.googleapis.com/css?family=Alegreya+Sans);
+$primary-font: /*'Josefin Sans', sans-serif;*/'Alegreya Sans', sans-serif;
 $other-font: 'Arimo', sans-serif;
 $primary-clor: #0A4F9B;
 
@@ -17,14 +18,14 @@ body{
 			display: block;
 			background: url('./images/background.jpg') no-repeat;
 			background-size: cover;
-			opacity: 0.3;
+			/*opacity: 0.3;*/
 			.background_overlay{
 				width: 100%;
 				height: 100%;
 				display: block;
 				content: '';
 				min-height: inherit;
-				background-color: rgba(0, 0, 0, 0.6);
+				background-color: rgba(19, 12, 25, 0.92);
 
 			}
 		}
@@ -32,11 +33,12 @@ body{
 				position: relative;
 				z-index: 2;
 			nav{
+				padding-top: 7px;
 				a{
 					font-size: 18px;
 					color: $primary-clor;
 					font-family: $other-font;
-					padding-top: 7px;
+					
 				}
 			}
 			h1{
@@ -44,6 +46,7 @@ body{
 				display: inline-block;
 				color: $primary-clor;
 				vertical-align: top;
+				letter-spacing: -0.5px;
 			}
 		}
 		&.small{
@@ -111,8 +114,8 @@ body{
 					text-align: right;
 				}
 				.about{
-					background: #ffffff;
-					color: #222222;
+					background: rgba(255, 255, 255, 0.45);
+					color: rgb(0, 0, 0);
 					font-size: 17px;
 					font-family: $other-font;
 					padding: 10px;
