@@ -3,6 +3,8 @@ import {$, BaseView} from 'muce.io';
 import AnaliticsModel from './model';
 //import {SmoothieChart} from 'js/smoothie';
 import template from 'templates/analitics.html';
+import withinTemplate from 'templates/waitnig_block.html';
+import errorTemplate from 'templates/error_template.html';
  
 
 class AnaliticsModuleView extends BaseView {
@@ -31,11 +33,23 @@ class AnaliticsModuleView extends BaseView {
 				}, 1500);
 			}
 			this.showCharts();
+		}, () => {
+			this.renderError();
 		});
 		console.log(query);
 	}
+	renderError() {
+		this.render();
+		this.$el.append(errorTemplate());
+	}
 	showCharts() {
 		this.render();
+		if (this.model.get('status') === 0) {
+			console.log('withing')
+			this.$el.append(withinTemplate({}));
+			return;
+		}
+		console.log('render')
 		var chartObject = uv.chart('StackedArea', {
 			categories : ['Tweets by day'],
 			dataset : {
