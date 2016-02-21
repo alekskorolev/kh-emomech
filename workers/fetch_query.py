@@ -3,6 +3,11 @@ import threading
 import pickle
 import oauth2
 import json
+import logging
+import time
+from datetime import timedelta
+
+log = logging.getLogger('worker')
 
 
 class Listener(threading.Thread):
@@ -54,20 +59,34 @@ class Listener(threading.Thread):
         query = self.redis.get(token)
         if (query):
             query_data = pickle.loads(query)
-            result = self.get_next_page(query_data['query'])
-            self.clear_data(result);
+            result = self.redis.get(query_data['query'])
+            if not result:
+                result = self.get_next_page(query_data['query'])
+                result['query_time'] =  time.time()
+                self.clear_data(result)
+                self.redis.set(query_data['query'], pickle.dumps(result))
+            else:
+                result = pickle.loads(result)
+                last_query_time = result['query_time']
+                now = time.time()
+                if last_query_time + timedelta(minutes=30).total_seconds() < now:
+                    result = self.get_next_page(query_data['query'])
+                    result['query_time'] =  time.time()
+                    self.clear_data(result)
+
             query_data['result'] = result
-            print(len(result['statuses']))
+            log.log(2, len(result['statuses']))
             query_data['status'] = 1
+
             self.redis.set(token, pickle.dumps(query_data))
         else:
-            print("query not found:", token)
+            log.log(2, "query not found: %s" % (token, ))
 
     def run(self):
         for item in self.pubsub.listen():
             if item['data'] == b'KILL':
                 self.pubsub.unsubscribe()
-                print(self, "unsubscribed and finished")
+                log.log(2, "unsubscribed and finished")
                 break
             else:
                 self.work(item)
