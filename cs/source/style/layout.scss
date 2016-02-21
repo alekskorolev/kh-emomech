@@ -2,7 +2,7 @@
 @import url(https://fonts.googleapis.com/css?family=Arimo);
 $primary-font: 'Josefin Sans', sans-serif;
 $other-font: 'Arimo', sans-serif;
-$primary-clor: #4d5581;
+$primary-clor: #0A4F9B;
 
 body{
 	a{
@@ -18,6 +18,15 @@ body{
 			background: url('./images/background.jpg') no-repeat;
 			background-size: cover;
 			opacity: 0.3;
+			.background_overlay{
+				width: 100%;
+				height: 100%;
+				display: block;
+				content: '';
+				min-height: inherit;
+				background-color: rgba(0, 0, 0, 0.6);
+
+			}
 		}
 		.content{
 				position: relative;
@@ -27,6 +36,7 @@ body{
 					font-size: 18px;
 					color: $primary-clor;
 					font-family: $other-font;
+					padding-top: 7px;
 				}
 			}
 			h1{
@@ -108,8 +118,21 @@ body{
 					padding: 10px;
 				    border-radius: 5px;
 				    margin-top: 15px;
+				    text-align: center;
 				}
 			}
+		}
+	}
+	.container{
+		width: 1280px;
+	    margin: 0px auto;
+		.waitnog-block{
+			font-size: 24px;
+			font-family: $other-font;
+			color: $primary-clor;
+			text-align: center;
+			margin-top: 15px;
+
 		}
 	}
 }
