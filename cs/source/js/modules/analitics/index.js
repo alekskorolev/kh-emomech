@@ -9,7 +9,7 @@ class AnaliticsModuleView extends BaseView {
 		super.initialize(options);
 	}
 	showDefaultResult(query) {
-		var interval, timeout = 10;
+		var interval, timeout = 30;
 
 		this.model.set({queryString: query, token: undefined, status: 0});
 		this.model.fetch().then(() => {
@@ -19,9 +19,12 @@ class AnaliticsModuleView extends BaseView {
 						clearInterval(interval);
 					}
 					this.model.fetch().then(() => {
+						if (this.model.get('status') > 0) {
+							clearInterval(interval);
+						}
 						this.showCharts();
 					});
-				}, 500);
+				}, 1500);
 			}
 			this.showCharts();
 		});
