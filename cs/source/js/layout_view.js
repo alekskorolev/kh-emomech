@@ -47,7 +47,6 @@ class LayoutView extends BaseView {
 		this.router.app = this;
 		this.bindRoute();
 		this.$header = this.$('.jsc-header');
-/*		this.$el.on('action.search', _.bind(this, this.doSearch));*/
 	}
 	doSearch(event) {
 		var query = encodeURI(_.extract(event, 'extra.value', ''));

@@ -36,19 +36,16 @@ class AnaliticsModuleView extends BaseView {
 	}
 	showCharts() {
 		this.render();
-		var chartObject = uv.chart('Line', {
-			categories : ['t1', 't2'],
+		var chartObject = uv.chart('StackedArea', {
+			categories : ['Tweets by day'],
 			dataset : {
-				t1: [
-					{name: 1, value: 5},
-					{name: 2, value: 3}
-				],
-				t2: [
-					{name: 1, value: 7},
-					{name: 2, value: 2}
-				]
+				'Tweets by day': this.model.getCountByTime(2)
 			}
-		}, {});
+		}, {
+			graph: {
+				orientation: "Vertical"
+			}
+		});
 		this.$el.append(chartObject)
 /*		this.smoothie = this.smoothie || new SmoothieChart();
 		this.smoothie.streamTo(this.$('#jsc-analitic-canvas')[0]);*/

@@ -25,7 +25,7 @@ class Listener(threading.Thread):
         return content
 
     def get_next_page(self, query, last_id=None):
-        url = 'https://api.twitter.com/1.1/search/tweets.json?count=98&q=%s' % (query,)
+        url = 'https://api.twitter.com/1.1/search/tweets.json?count=100&q=%s' % (query,)
         if last_id:
             url += "&max_id=%d" % (last_id, )
         result = self.oauth_req(url)
@@ -37,12 +37,25 @@ class Listener(threading.Thread):
             result_data['statuses'] += list['statuses']
         return result_data
 
+    def clear_data(self, result):
+        clean_messages = []
+        source_messages = result['statuses']
+        for msg in source_messages:
+            clean_msg = {
+                'created_at': msg['created_at'],
+                'id': msg['id'],
+                'text': msg['text'],
+            }
+            clean_messages.append(clean_msg)
+        result['statuses'] = clean_messages
+
     def work(self, item):
         token = item['data']
         query = self.redis.get(token)
         if (query):
             query_data = pickle.loads(query)
             result = self.get_next_page(query_data['query'])
+            self.clear_data(result);
             query_data['result'] = result
             print(len(result['statuses']))
             query_data['status'] = 1
