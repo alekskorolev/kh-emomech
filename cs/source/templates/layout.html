@@ -2,13 +2,24 @@
 			в состоянии small превращается в полосу без фоновой картинки с теми-же элементами,
 			если смена состояния будет через анимацию, вообще классно)) -->
 <header class="{{ headerState }} jsc-header">
-	<a href="http://169.44.58.88/" class="logo"><img src="/image/logo.png"/></a>
-	<jsc-search-component></jsc-search-component>
-	<nav>
-		<ul>
-			<li><a href="/#">Home</a></li>
-		</ul>
-	</nav>
+	<div class='background'></div>
+	<div class='content'>
+		<nav>
+			<ul>
+				<li><a href="/#">home</a></li>
+			</ul>
+		</nav>
+		<div class='logo_wrap'>
+			<a href="http://169.44.58.88/" class="logo">
+				<img src="./images/logo.png"/>
+				<h1>what does the tweet say ?</h1>
+			</a>
+		</div>
+		<jsc-search-component></jsc-search-component>
+		<div class ='about'>
+			What this all about ?
+		</div>	
+	</div>
 </header>
 <div class="container" id="jsc-page"></div>
 <!-- TODO: что в футер класть пока не знаю -->
