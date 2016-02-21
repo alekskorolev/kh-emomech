@@ -1,11 +1,115 @@
-body{
-	background: url('./images/fon.png') no-repeat;
-	header{
-		&.big{
+@import url(https://fonts.googleapis.com/css?family=Josefin+Sans);
+@import url(https://fonts.googleapis.com/css?family=Arimo);
+$primary-font: 'Josefin Sans', sans-serif;
+$other-font: 'Arimo', sans-serif;
+$primary-clor: #4d5581;
 
+body{
+	a{
+		text-decoration: none;
+	}
+	header{
+		position: relative;
+		.background{
+			position: absolute;
+			z-index: 1;
+			width: 100%;
+			display: block;
+			background: url('./images/background.jpg') no-repeat;
+			background-size: cover;
+			opacity: 0.3;
+		}
+		.content{
+				position: relative;
+				z-index: 2;
+			nav{
+				a{
+					font-size: 18px;
+					color: $primary-clor;
+					font-family: $other-font;
+				}
+			}
+			h1{
+				font-family: $primary-font;
+				display: inline-block;
+				color: $primary-clor;
+				vertical-align: top;
+			}
 		}
 		&.small{
-
+			.background{
+				min-height: 90px;
+				background-position: 0 -270px;
+			}
+			nav{
+				position: absolute;
+			    right: 10px;
+			    padding-top: 5px;
+			}
+			.logo_wrap{
+				padding-left: 10px;
+				display: inline-block;
+				img{
+					height: 90px;
+				}
+				h1{
+					font-size: 25px;
+					padding-top: 32px;
+				}
+			}
+			.query_search{
+				input{
+					vertical-align: top;
+					margin-top: 32px;
+					margin-left: 12px;
+					height: 17px;
+					border: 1px solid $primary-clor;
+					width: 35%;
+				}
+			}
+			.about{
+				display: none;
+			}
+		}
+		&.big{
+			.background{
+				min-height: 580px;
+			}
+			.content{
+				width: 1280px;
+				margin: 0px auto;
+				.logo_wrap{
+					margin: 0 auto;
+					width: 435px;
+					margin-bottom: 15px;
+					h1{
+						font-size: 32px;
+						padding-top: 30px;
+					}
+				}
+				.query_search{
+					display: block;
+					input{
+						display: block;
+						width: 75%;
+						margin: 0 auto;
+						border: 2px solid $primary-clor;
+						height: 23px;
+					}
+				}
+				nav{
+					text-align: right;
+				}
+				.about{
+					background: #ffffff;
+					color: #222222;
+					font-size: 17px;
+					font-family: $other-font;
+					padding: 10px;
+				    border-radius: 5px;
+				    margin-top: 15px;
+				}
+			}
 		}
 	}
 }
