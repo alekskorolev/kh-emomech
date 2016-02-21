@@ -32,7 +32,7 @@ class AnaliticsModuleView extends BaseView {
 						}
 						this.showCharts();
 					});
-				}, 3000);
+				}, 1000);
 			}
 			this.showCharts();
 		}, () => {
@@ -45,6 +45,8 @@ class AnaliticsModuleView extends BaseView {
 		this.$el.append(errorTemplate());
 	}
 	showCharts() {
+		var chartObject, width;
+
 		this.render();
 		if (this.model.get('status') === 0) {
 			console.log('withing')
@@ -52,7 +54,9 @@ class AnaliticsModuleView extends BaseView {
 			return;
 		}
 		console.log('render')
-		var chartObject = uv.chart('StackedArea', {
+
+		width = Math.floor(window.screen.width * 0.83);
+		chartObject = uv.chart('StackedArea', {
 			categories : ['Tweets by day'],
 			dataset : {
 				'Tweets by day': this.model.getCountByTime(2)
@@ -60,6 +64,9 @@ class AnaliticsModuleView extends BaseView {
 		}, {
 			graph: {
 				orientation: "Vertical"
+			},
+			dimension: {
+				width: width
 			}
 		});
 		this.$el.append(chartObject)

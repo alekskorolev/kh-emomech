@@ -17,10 +17,10 @@ class AnaliticsModel extends BaseModel {
 		return url;
 	}
 	getTimeKey(time, period = 0) {
-		var key = time.getFullYear();
+		var key = '';
 
 		if (period === 0) return key;
-		if (period > 0) key += '.' + (time.getMonth() + 1);
+		if (period > 0) key += (time.getMonth() + 1);
 		if (period > 1) key += '.' + time.getDate();
 		if (period > 2) key += ' ' + time.getHours();
 		if (period > 3) key += ':' + time.getMinutes();
