@@ -91,27 +91,61 @@ class AnaliticsModuleView extends BaseView {
 		this.parseResult(query);
 	}
 	retweetByDay(query) {
-		
+		this.renderCb = () => {
+			this.showCharts(query, 
+							'StackedArea', 
+							this.model.getCountByRetweet(2),
+							{hlabel: "Count of tweets has:"});
+		}
+		this.parseResult(query);
 	}
 	retweetByHour(query) {
+		this.renderCb = () => {
+			this.showCharts(query, 
+							'StackedArea', 
+							this.model.getCountByRetweet(3),
+							{hlabel: "Count of tweets has:"});
+		}
+		this.parseResult(query);
 		
 	}
 	moodByDay(query) {
+		this.renderCb = () => {
+			this.showCharts(query, 
+							'StackedArea', 
+							this.model.getCountByMood(2),
+							{hlabel: "Emotional with texts"});
+		}
+		this.parseResult(query);
 		
 	}
 	moodByHour(query) {
+		this.renderCb = () => {
+			this.showCharts(query, 
+							'StackedArea', 
+							this.model.getCountByMood(3),
+							{hlabel: "Emotional with texts"});
+		}
+		this.parseResult(query);
 		
 	}
-	showCharts(query, type, data) {
-		var chartObject;
+	showCharts(query, type, data, meta={}) {
+		var chartObject, options;
+
 		console.log(this.model.attributes)
 		this.render({query: query});
 		if (this.model.get('status') === 0) {
 			this.$el.append(withinTemplate({}));
 			return;
 		}
-
-		chartObject = uv.chart(type, data, this.chartOptions());
+		options = this.chartOptions();
+		options.meta = meta;
+		if (this.chartObject) {
+			this.chartObject.remove();
+			$('.uv-chart-div').remove();
+		}
+		this.chartObject = uv.chart(type, data, options);
+		console.log(this.chartObject)
 	}
 
 }
