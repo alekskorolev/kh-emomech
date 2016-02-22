@@ -1,10 +1,15 @@
 import {
 	_,
-	BaseView
+	$,
+	BaseView,
+	BaseModel
 } from 'muce.io';
 import jscAdd from 'ehogan-loader/jscmanager';
 
+import config from 'cs/config/app.conf.js';
+
 import layoutTmpl from 'templates/layout.html'
+import lastTmpl from 'templates/last.html'
 import 'style/layout.scss'
 
 import PopupComponents from './components/popup';
@@ -22,6 +27,7 @@ jscAdd([
 class LayoutView extends BaseView {
 	bindRoute() {
 		this.router.on('route', this.onRoute, this);
+		this.router.route('', this.main);
 	}
 	onRoute() {
 		if (window.location.hash.length > 1) {
@@ -29,6 +35,13 @@ class LayoutView extends BaseView {
 		} else {
 			this.$header.removeClass('small').addClass('big');
 		}
+	}
+	main() {
+		this.model = new BaseModel();
+		this.model.url = config.common.api.getUrl() + 'statistic/last/';
+		this.model.fetch().then(() => {
+			$('#jsc-page').append(lastTmpl({queryes: this.model.get('queryes')}));
+		});
 	}
 	beforeInitialize(options) {
 		var authenticateWidget,

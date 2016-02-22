@@ -62,8 +62,20 @@ class ActionQueryView(View):
         rconn = redis.Redis(connection_pool=pool)
         return rconn
 
+    def last_queryes(self, query=None):
+        last_q = self.redis.get('l:queryes')
+        if last_q:
+            last_q = pickle.loads(last_q)
+        else:
+            last_q = []
+        if query and not query in last_q:
+            last_q.append(query)
+        self.redis.set('l:queryes', pickle.dumps(last_q))
+        return last_q
+
     def get(self, request, *args, **kwargs):
         query = request.GET.get('q')
+        self.last_queryes(query)
         token = self.get_token(query)
         stored_query = self.get_query(token, query_string=query)
         return http.JsonResponse(stored_query)
@@ -74,3 +86,8 @@ class GetResultView(ActionQueryView):
         token = kwargs['token']
         stored_query = self.get_query(token, status=True)
         return http.JsonResponse(stored_query)
+
+
+class GetLastQueryes(ActionQueryView):
+    def get(self, request, *args, **kwargs):
+        return http.JsonResponse({'queryes': self.last_queryes()})

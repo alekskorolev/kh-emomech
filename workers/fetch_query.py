@@ -11,17 +11,41 @@ log = logging.getLogger('worker')
 
 keys = [
     {
+        'C_KEY': '9PUZfDYajB7bcuSernSDfumCV',
+        'C_SEC': 'uhQzzklgN0OHvuuFzVm9qi1dUh8KTvdw8vZGWQc4WhKGw11tZ9',
+        'A_KEY': '1567430544-BE4jCvNDGqarrNU1ql9o71YdKbP0HEk4KuaNXJb',
+        'A_SEC': 'F1Vy30pF4xM85ldf6JLcrOkPa8nZfmrTw0yyCagN8w1wX',
+    },
+    {
         'C_KEY': 'MTkfYrhDoZmrsLsfWUhUqHCtT',
         'C_SEC': '3qLSWmmiTD681GCjIHmr3N5AUO7a9ImvjIufRPLANLvVRgE18D',
         'A_KEY': '701479992874680321-bU1uSlQ88xO7D9xe5M1Ota4WhnNxn3u',
         'A_SEC': 'SUZccdPcTO8au7HKbxZYEJBgx7atnW1mxBiSEEJNY3Ute',
+    },
+    {
+        'C_KEY': 'I5a2SbZ6kJMzCZSFVKavo01O9',
+        'C_SEC': 'wnYUhzueWpkVzsnRA2P379hVglfwycY1mFAHFiIPee2mpmxfmo',
+        'A_KEY': '701484146993065984-sYELcyC42HodlVspHzXrMgqSnIWpdGb',
+        'A_SEC': '06XvjwVSKIMlUUxbRNKXxwMfvn8o1D7LVlxWQT70da2x4',
+    },
+    {
+        'C_KEY': 'CAKM6guBzyNuSQobpXc57L7VR',
+        'C_SEC': 'XyM5alNqUnXwFQx9i69npw0QMEB9lebj2fkZs9MeNWLNxtMaOZ',
+        'A_KEY': '2888104553-MpKQ0cl1GHDkbtZWieMuIVKFGLcoYvPxJJb7UPH',
+        'A_SEC': 'X8xb9Wj1rVdfGiRMB6NZj6WoTO3T04OGNY8sQfKfcac4o',
+    },
+    {
+        'C_KEY': 'cdkBoHFO3JXsM1R6FiKJ7qbGP',
+        'C_SEC': 'VhdpjOxsBRuOcZhFuccYdazxprSHtaQGhPyclfsE7YoQguRK1G',
+        'A_KEY': '701491142613983232-qbTLEtZFZM54OgTzK9cvErqEArb7kgI',
+        'A_SEC': 'XutvYnnmOfdVXvmrl5QGgM28KyiNceLe45rrc1IabB9gj',
     },
 ]
 
 
 class Listener(threading.Thread):
     current_key = 0
-    max_key = 1
+    max_key = 5
 
     def __init__(self, r, channels):
         threading.Thread.__init__(self)

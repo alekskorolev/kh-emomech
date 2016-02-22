@@ -100,6 +100,7 @@ body{
 			}
 		}
 		&.big{
+			min-height: 580px;
 			.background{
 				min-height: 580px;
 			}
@@ -142,13 +143,12 @@ body{
 					text-align: right;
 				}
 				.about{
-					background: rgba(255, 255, 255, 0.45);
-					color: rgb(0, 0, 0);
-					font-size: 17px;
-					font-family: $other-font;
-					padding: 10px;
+					color: white;
+				    font-size: 26px;
+				    font-family: "Arimo", sans-serif;
+				    padding: 10px;
 				    border-radius: 5px;
-				    margin-top: 15px;
+				    margin: 60px 120px 0;
 				    text-align: center;
 				}
 			}
@@ -157,6 +157,19 @@ body{
 	.container{
 		width: 1280px;
 	    margin: 0px auto;
+	    .last-queries {
+		    margin-top: 15px;
+		    h2 {
+		    	margin-bottom: 15px;
+		    }
+		    span {
+			    padding: 5px;
+			    background: beige;
+			    border: 1px solid silver;
+			    border-radius: 14px;
+			    margin: 10px;
+		    }
+	    }
 		.waitnog-block{
 			font-size: 48px;
 			font-family: $other-font;
